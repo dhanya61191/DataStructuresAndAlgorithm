@@ -31,6 +31,7 @@ import java.util.Stack;
 public class FloodFillAlgorithm {
 
 	private int[][] image = null;
+	private int[][] visited = null;
 
 	private List<List<Integer>> pixelBoundaries = null;
 
@@ -43,7 +44,7 @@ public class FloodFillAlgorithm {
 	private static final Integer DECREASE_COLUMN_COUNT = -1;
 
 	private static final Integer STATIC_POSITION = 0;
-
+	private Stack<List<Integer>> neighbors = new Stack<>();
 	/*
 	 * Read an actual image into a 2d array.
 	 * 
@@ -58,11 +59,15 @@ public class FloodFillAlgorithm {
 		pixelBoundaries.add(Arrays.asList(INCREASE_ROW_COUNT, INCREASE_COLUMN_COUNT));// right lower diagonal
 		pixelBoundaries.add(Arrays.asList(DECREASE_ROW_COUNT, STATIC_POSITION));// up
 		pixelBoundaries.add(Arrays.asList(INCREASE_ROW_COUNT, STATIC_POSITION));// down
+		pixelBoundaries.add(Arrays.asList(STATIC_POSITION, STATIC_POSITION));// down
 	}
 
 	private void loadImage() {
 		image = new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 2, 1, 1 }, { 1, 2, 2, 2, 1 },
 				{ 2, 2, 2, 2, 2 } };
+				visited = new int[][] { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 },
+					{ 0, 0, 0, 0, 0 } };
+		
 	}
 
 	private void displayImage() {
@@ -82,7 +87,7 @@ public class FloodFillAlgorithm {
 
 		int rowLen = image.length - 1;
 		int colLen = image[0].length - 1;
-		Stack<List<Integer>> neighbors = new Stack<>();
+
 		for (List<Integer> pixelBoundary : pixelBoundaries) {
 			if ((rowPixel + pixelBoundary.get(0)) > rowLen || (rowPixel + pixelBoundary.get(0)) <= 0) {
 				continue;
@@ -112,12 +117,15 @@ public class FloodFillAlgorithm {
 		
 		if(!neighbors.isEmpty() && neighbors.peek() != null) {
 			List<Integer> neighbor = neighbors.pop();
+			visited[neighbor.get(0)][neighbor.get(1)]=1;
 			if(image[neighbor.get(0)][neighbor.get(1)] == currentColor) {
 				image[neighbor.get(0)][neighbor.get(1)] = colorToBeChanged;
 				performFillColor(neighbor.get(0),neighbor.get(1),currentColor,colorToBeChanged);
 			}else {
-				return;
+				performFillColor(neighbor.get(0),neighbor.get(1),currentColor,colorToBeChanged);
 			}
+		}else {
+			return;
 		}
 		
 	}
