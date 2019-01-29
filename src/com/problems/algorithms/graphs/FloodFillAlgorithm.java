@@ -2,7 +2,24 @@
  * @author VIVEK
  * @Date 01/28/2019
  * 
+ * Boundary-fill Algorithm. This is an area filling algorithm. ... If we have a specified boundary in a single color, then the fill algorithm proceeds pixel by pixel until the boundary color is encountered.
  * 
+ *  Input:
+ *  1 1 1 1 1
+ *  1 1 1 1 1
+ *  1 1 2 1 1
+ *  1 2 2 2 1
+ *  2 2 2 2 2
+ *  
+ *  Position of pixel specified for color change: [2,2]
+ *  
+ *  
+ *  Output:
+ *  1 1 1 1 1
+ *  1 1 1 1 1
+ *  1 1 3 1 1
+ *  1 3 3 3 1
+ *  3 3 3 3 3
  */
 package com.problems.algorithms.graphs;
 
