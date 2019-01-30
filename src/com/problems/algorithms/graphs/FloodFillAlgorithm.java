@@ -66,9 +66,9 @@ public class FloodFillAlgorithm {
 		int colLen = image[0].length - 1;
 		List<List<Integer>> neighbors = new ArrayList<>();
 		for (List<Integer> pixelBoundary : pixelBoundaries) {
-			if ((rowPixel + pixelBoundary.get(0)) > rowLen || (rowPixel + pixelBoundary.get(0)) <= 0) {
+			if ((rowPixel + pixelBoundary.get(0)) > rowLen || (rowPixel + pixelBoundary.get(0)) < 0) {
 				continue;
-			} else if ((colPixel + pixelBoundary.get(1)) > colLen || (colPixel + pixelBoundary.get(1)) <= 0) {
+			} else if ((colPixel + pixelBoundary.get(1)) > colLen || (colPixel + pixelBoundary.get(1)) < 0) {
 				continue;
 			} else {
 				if(visited[rowPixel + pixelBoundary.get(0)][colPixel + pixelBoundary.get(1)] == 0 && image[rowPixel + pixelBoundary.get(0)][colPixel + pixelBoundary.get(1)] == 2) {
@@ -84,7 +84,7 @@ public class FloodFillAlgorithm {
 	
 	private void performFillColor(int rowPixel, int colPixel, int currentColor, int colorToBeChanged) {
 		
-		Stack<List<Integer>> neighbors = new Stack<>();
+		LinkedHashSet<List<Integer>> neighbors = new LinkedHashSet<>();
 		neighbors.push(Arrays.asList(rowPixel, colPixel));
 		while(!neighbors.isEmpty()) {
 			List<Integer> neighbor = neighbors.pop();
@@ -112,7 +112,7 @@ public class FloodFillAlgorithm {
 		ffA.loadPixelBoundaries();
 		ffA.loadImage();
 		ffA.displayImage();
-		ffA.performFillColor(3, 1, 2, 3);
+		ffA.performFillColor(2, 2, 2, 3);
 		ffA.displayImage();
 	}
 
