@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -59,7 +61,7 @@ public class FloodFillAlgorithm {
 		}
 	}
 
-	private List<List<Integer>> identifyNeighbors(int rowPixel, int colPixel) {
+	private List<List<Integer>> identifyNeighbors(int rowPixel, int colPixel, int currentColor) {
 		// Identify the neighboring coordinates, not the values
 
 		int rowLen = image.length - 1;
@@ -71,7 +73,7 @@ public class FloodFillAlgorithm {
 			} else if ((colPixel + pixelBoundary.get(1)) > colLen || (colPixel + pixelBoundary.get(1)) < 0) {
 				continue;
 			} else {
-				if(visited[rowPixel + pixelBoundary.get(0)][colPixel + pixelBoundary.get(1)] == 0 && image[rowPixel + pixelBoundary.get(0)][colPixel + pixelBoundary.get(1)] == 2) {
+				if(visited[rowPixel + pixelBoundary.get(0)][colPixel + pixelBoundary.get(1)] == 0 && image[rowPixel + pixelBoundary.get(0)][colPixel + pixelBoundary.get(1)] == currentColor) {
 					neighbors.add(Arrays.asList(rowPixel + pixelBoundary.get(0), colPixel + pixelBoundary.get(1)));
 				}
 				
@@ -84,13 +86,14 @@ public class FloodFillAlgorithm {
 	
 	private void performFillColor(int rowPixel, int colPixel, int currentColor, int colorToBeChanged) {
 		
-		LinkedHashSet<List<Integer>> neighbors = new LinkedHashSet<>();
+		Stack<List<Integer>> neighbors = new Stack<>();
 		neighbors.push(Arrays.asList(rowPixel, colPixel));
 		while(!neighbors.isEmpty()) {
+			
 			List<Integer> neighbor = neighbors.pop();
 			int r = neighbor.get(0);
 			int c = neighbor.get(1);
-			List<List<Integer>> newNeighbors = identifyNeighbors(r,c);
+			List<List<Integer>> newNeighbors = identifyNeighbors(r,c, currentColor);
 			for(List<Integer> l : newNeighbors) {
 				neighbors.push(l);
 			}
